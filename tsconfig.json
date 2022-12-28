@@ -1,0 +1,14 @@
+{
+    "compilerOptions": {
+       "strict": true,
+       "module": "ES2020",
+       "lib": ["DOM", "ES2020"],
+       "moduleResolution": "node",
+       "target": "es2020",
+       "esModuleInterop": true,
+       "rootDir": "src",
+       "outDir": "dist",
+       "noEmitOnError": true,
+       "typeRoots": [ "node_modules/@types" ],
+    },
+ }

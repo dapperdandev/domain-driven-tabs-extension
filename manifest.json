@@ -1,0 +1,15 @@
+{
+    "manifest_version": 3,
+    "name": "Domain Driven Tabs",
+    "description": "Automatically Organize Tabs by Domain",
+    "version": "1.0",
+    "permissions": [
+        "tabs",
+        "tabGroups",
+        "scripting"
+    ],
+    "action": {
+        "default_popup": "index.html",
+        "default_title": "Domain Driven Tabs"
+    }
+  }
