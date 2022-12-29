@@ -1,20 +1,26 @@
 <html>
   <head>
-    <link href="index.scss" rel="stylesheet" />
+    <link href="index.css" rel="stylesheet" />
   </head>
-  <body class="uk-padding uk-width-medium">
-    <form class="uk-form-stacked" onsubmit="">
-      <div class="uk-margin">
-        <label class="uk-form-label">Min tabs per group</label>
-        <input class="uk-input" id="min-tabs" type="number" value="2" min="1" />
+  <body class="p-4">
+    <form class="w-64">
+      <div class="form-control w-full max-w-xs">
+        <label class="label">
+          <span class="label-text text-xs">Min tabs per group</span>
+        </label>
+        <input
+          id="min-tabs"
+          class="input input-xs input-bordered w-full max-w-xs"
+          type="number"
+          value="2"
+          min="1"
+        />
       </div>
-      <button
-        id="group-tabs"
-        type="submit"
-        class="uk-button uk-button-primary uk-button-small"
-      >
-        Group
-      </button>
+      <div class="form-control w-full max-w-xs mt-2">
+        <button id="group-tabs" type="submit" class="btn btn-primary">
+          Group
+        </button>
+      </div>
     </form>
     <script type="module" src="main.ts"></script>
   </body>
