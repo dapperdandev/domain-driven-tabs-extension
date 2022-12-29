@@ -1,6 +1,24 @@
 <html>
-    <body>
-        <button id="group-tabs">Group Tabs</button>
-        <script type="module" src="main.ts"></script>
-    </body>
+  <head>
+    <link href="index.css" rel="stylesheet" />
+  </head>
+  <body class="p-2">
+    <div class="mb-4">
+      <input
+        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+        id="min-tabs"
+        type="number"
+        value="1"
+        min="1"
+        placeholder="Min tabs per group"
+      />
+    </div>
+    <button
+      id="group-tabs"
+      class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+    >
+      Group Tabs, please
+    </button>
+    <script type="module" src="main.ts"></script>
+  </body>
 </html>

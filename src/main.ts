@@ -1,34 +1,11 @@
-import { DomainMap, Tab, TabGroup, TabGroupUpdateProps } from './models'
+import { getDomainMap, groupTabs, unGroupTabs } from './tab-manager/tab-manager'
 
-const groupTabsBtn = document.querySelector('button#group-tabs') as HTMLButtonElement
+const groupTabsBtn = document.querySelector('button#group-tabs') as HTMLButtonElement || 1
 
 groupTabsBtn.onclick = async () => {
   const domainMap = await getDomainMap()
-  groupTabs(domainMap)
-}
+  const minTabsPerGroup = (document.querySelector('input#min-tabs') as HTMLInputElement).valueAsNumber
 
-const getDomainMap = async (): Promise<DomainMap> => {
-  const tabs = await chrome.tabs.query({})
-  const domainMap = tabs.reduce((prev: any, curr: Tab) => {
-    if (!curr?.url) return prev
-    const domain = new URL(curr?.url).hostname
-    return {
-      ...prev,
-      [domain]: [...(prev[domain] || []), curr.id]
-    }
-  }, {})
-
-  return domainMap
-}
-
-const groupTabs = (domainMap: DomainMap): void => {
-  const domains = Object.keys(domainMap)
-  domains.forEach((domain: string): void => {
-    const options: TabGroupUpdateProps = {
-      title: domain,
-      collapsed: true
-    }
-    chrome.tabs.group({ tabIds: domainMap[domain] },
-      async (groupId: number): Promise<TabGroup> => await chrome.tabGroups.update(groupId, options))
-  })
+  groupTabs(domainMap, minTabsPerGroup)
+  await unGroupTabs(minTabsPerGroup)
 }
