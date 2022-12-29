@@ -21,13 +21,21 @@ export const groupTabs = (domainMap: Record<string, number[]>, minTabs: number):
   domains.forEach((domain: string): void => {
     if (domainMap[domain].length < minTabs) return
 
+    const title = getTitleFromDomain(domain)
     const options: TabGroupUpdateProps = {
-      title: domain,
+      title,
       collapsed: true
     }
     chrome.tabs.group({ tabIds: domainMap[domain] },
       async (groupId: number): Promise<TabGroup> => await chrome.tabGroups.update(groupId, options))
   })
+}
+
+const getTitleFromDomain = (domain: string): string => {
+  const domainArr = domain.split('.')
+  const result = domainArr.slice(0, domainArr.length - 1).join('.').replace('www.', '')
+
+  return result
 }
 
 export const unGroupTabs = async (minTabs: number): Promise<void> => {
