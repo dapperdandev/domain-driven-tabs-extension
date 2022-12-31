@@ -1,6 +1,35 @@
 import { TAB_GROUP_ID_NONE } from '../constants'
 import { Tab, TabGroupUpdateProps, TabGroup } from '../models'
 
+const getTitleFromDomain = (domain: string): string => {
+  const domainArr = domain.split('.')
+  const result = domainArr.slice(0, domainArr.length - 1).join('.').replace('www.', '')
+
+  return result
+}
+
+const sortTabs = async (): Promise<void> => {
+  const tabs = await chrome.tabs.query({})
+  const promises: Array<Promise<Tab>> = []
+
+  tabs.forEach(async (tab: Tab) => {
+    if (!tab.id || tab.groupId !== TAB_GROUP_ID_NONE) return
+    promises.push(chrome.tabs.move(tab.id, { index: -1 }))
+  })
+  await Promise.all(promises)
+}
+
+const buildTabGroupMap = async (): Promise<Record<string, number[]>> => {
+  const tabs = await chrome.tabs.query({})
+  return tabs.reduce((prev: Record<string, number[]>, curr: Tab): Record<string, number[]> => {
+    if (!curr.id) return prev
+    return {
+      ...prev,
+      [curr.groupId]: [...prev[curr.groupId] || [], curr.id]
+    }
+  }, {})
+}
+
 export const getDomainMap = async (): Promise<Record<string, number[]>> => {
   const tabs = await chrome.tabs.query({})
   const domainMap = tabs.reduce((prev: any, curr: Tab): Record<string, number[]> => {
@@ -15,8 +44,9 @@ export const getDomainMap = async (): Promise<Record<string, number[]>> => {
   return domainMap
 }
 
-export const groupTabs = (domainMap: Record<string, number[]>, minTabs: number): void => {
-  const domains = Object.keys(domainMap)
+export const groupTabs = async (domainMap: Record<string, number[]>, minTabs: number): Promise<void> => {
+  const domains = Object.keys(domainMap).sort() // TODO: sort after titles
+  const promises: Array<Promise<TabGroup>> = []
 
   domains.forEach((domain: string): void => {
     if (domainMap[domain].length < minTabs) return
@@ -27,33 +57,25 @@ export const groupTabs = (domainMap: Record<string, number[]>, minTabs: number):
       collapsed: true
     }
     chrome.tabs.group({ tabIds: domainMap[domain] },
-      async (groupId: number): Promise<TabGroup> => await chrome.tabGroups.update(groupId, options))
+      (groupId: number) => promises.push(chrome.tabGroups.update(groupId, options)))
   })
-}
 
-const getTitleFromDomain = (domain: string): string => {
-  const domainArr = domain.split('.')
-  const result = domainArr.slice(0, domainArr.length - 1).join('.').replace('www.', '')
-
-  return result
+  await Promise.all(promises)
 }
 
 export const unGroupTabs = async (minTabs: number): Promise<void> => {
-  const tabs = await chrome.tabs.query({})
-  const tabGroupMap = tabs.reduce((prev: Record<string, number[]>, curr: Tab): Record<string, number[]> => {
-    if (!curr.id) return prev
-    return {
-      ...prev,
-      [curr.groupId]: [...prev[curr.groupId] || [], curr.id]
-    }
-  }, {})
+  const tabGroupMap = await buildTabGroupMap()
 
   // separate concerns / SRP
   const groupIds = Object.keys(tabGroupMap)
+  const promises: Array<Promise<void>> = []
   groupIds.forEach(async (groupId: string) => {
     if (tabGroupMap[groupId].length >= minTabs) return
     if (+groupId === TAB_GROUP_ID_NONE) return
 
-    await chrome.tabs.ungroup(tabGroupMap[groupId])
+    promises.push(chrome.tabs.ungroup(tabGroupMap[groupId]))
   })
+
+  await Promise.all(promises)
+  await sortTabs()
 }

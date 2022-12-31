@@ -6,6 +6,6 @@ groupTabsBtn.onclick = async () => {
   const domainMap = await getDomainMap()
   const minTabsPerGroup = (document.querySelector('input#min-tabs') as HTMLInputElement).valueAsNumber
 
-  groupTabs(domainMap, minTabsPerGroup)
+  await groupTabs(domainMap, minTabsPerGroup)
   await unGroupTabs(minTabsPerGroup)
 }
