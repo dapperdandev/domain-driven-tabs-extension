@@ -12,14 +12,14 @@ const sortTabs = async (): Promise<void> => {
   const tabs = await chrome.tabs.query({})
   const promises: Array<Promise<Tab>> = []
 
-  tabs.forEach(async (tab: Tab) => {
+  tabs.forEach((tab: Tab) => {
     if (!tab.id || tab.groupId !== TAB_GROUP_ID_NONE) return
     promises.push(chrome.tabs.move(tab.id, { index: -1 }))
   })
   await Promise.all(promises)
 }
 
-const buildTabGroupMap = async (): Promise<Record<string, number[]>> => {
+const getTabGroupMap = async (): Promise<Record<string, number[]>> => {
   const tabs = await chrome.tabs.query({})
   return tabs.reduce((prev: Record<string, number[]>, curr: Tab): Record<string, number[]> => {
     if (!curr.id) return prev
@@ -64,12 +64,12 @@ export const groupTabs = async (domainMap: Record<string, number[]>, minTabs: nu
 }
 
 export const unGroupTabs = async (minTabs: number): Promise<void> => {
-  const tabGroupMap = await buildTabGroupMap()
-
-  // separate concerns / SRP
+  // TODO: Break apart more / SRP
+  const tabGroupMap = await getTabGroupMap()
   const groupIds = Object.keys(tabGroupMap)
+
   const promises: Array<Promise<void>> = []
-  groupIds.forEach(async (groupId: string) => {
+  groupIds.forEach((groupId: string) => {
     if (tabGroupMap[groupId].length >= minTabs) return
     if (+groupId === TAB_GROUP_ID_NONE) return
 
