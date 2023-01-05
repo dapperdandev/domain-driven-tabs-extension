@@ -1,45 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <head>
-        <link href="../styles/index.css" rel="stylesheet" />
+      <link href="../styles/index.css" rel="stylesheet" />
     </head>
     <title>Options</title>
-</head>
-<body class="container mx-auto p-4">
-    <form>
+  </head>
+  <body class="container mx-auto p-4 flex justify-start">
+    <div>
+      <ul class="menu bg-base-100 w-56 p-2 rounded-box">
+        <li class="menu-title">
+          <span>Custom Groups</span>
+        </li>
+        <li><a>New Group</a></li>
+        <li><a>Item 2</a></li>
+      </ul>
+    </div>
+    <div class="mt-1 p-2 w-full">
+      <form>
+        <div class="form-control w-full">
+          <label class="label">
+            <span class="label-text text-xs">Group Name</span>
+          </label>
+          <input
+            id="min-tabs"
+            class="input input-bordered w-full"
+            type="text"
+          />
+        </div>
         <div class="form-control w-full">
             <label class="label">
-                <span class="label-text">Label</span>
+              <span class="label-text text-xs">Rules</span>
             </label>
             <input
-                id="min-tabs"
-                class="input input-bordered w-full"
-                type="number"
-                value="2"
-                min="1"
+              id="min-tabs"
+              class="input input-bordered w-full"
+              type="text"
             />
-        </div>
-        <div class="form-control w-full">
-            <label class="label">
-                <span class="label-text">Label</span>
-            </label>
-            <input
-                id="min-tabs"
-                class="input input-bordered w-full"
-                type="number"
-                value="2"
-                min="1"
-            />
-        </div>
-        <div class="form-control w-full p-2">
-            <button id="group-tabs" type="submit" class="btn btn-primary">
-                Button
-            </button>
-        </div>
-    </form>
-</body>
+          </div>
+        <button
+          id="group-tabs"
+          type="submit"
+          class="btn btn-primary w-full mt-3"
+        >
+          Add Rule
+        </button>
+      </form>
+    </div>
+  </body>
 </html>
