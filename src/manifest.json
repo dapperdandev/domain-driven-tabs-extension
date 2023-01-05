@@ -11,7 +11,8 @@
     "permissions": [
         "tabs",
         "tabGroups",
-        "scripting"
+        "scripting",
+        "storage"
     ],
     "action": {
         "default_popup": "index.html",
