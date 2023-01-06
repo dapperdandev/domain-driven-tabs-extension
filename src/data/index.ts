@@ -1,1 +1,1 @@
-export * as TabGroupRepository from './tab-group.repository'
+export * as TabGroupRepository from './tab-group.repository';
