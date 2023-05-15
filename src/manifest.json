@@ -7,6 +7,11 @@
     "page": "options/options.html",
     "open_in_tab": true
   },
+  "icons": {
+    "16": "assets/icon16.png",
+    "48": "assets/icon48.png",
+    "128": "assets/icon128.png"
+  },
   "version_name": "1.0.0 beta",
   "permissions": ["tabs", "tabGroups", "scripting", "storage"],
   "action": {
