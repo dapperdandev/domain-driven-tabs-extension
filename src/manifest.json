@@ -13,7 +13,7 @@
     "128": "assets/icon128.png"
   },
   "version_name": "1.0.0 beta",
-  "permissions": ["tabs", "tabGroups", "scripting", "storage"],
+  "permissions": ["tabs", "tabGroups", "storage"],
   "action": {
     "default_popup": "index.html",
     "default_title": "Domain Driven Tabs"
